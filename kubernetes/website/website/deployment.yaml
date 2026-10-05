@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: website
-          image: website-app:latest
-          imagePullPolicy: Never
+          image: 817009059025.dkr.ecr.us-east-1.amazonaws.com/gemal-world:latest
+          imagePullPolicy: IfNotPresent
 
           ports:
             - containerPort: 8080
