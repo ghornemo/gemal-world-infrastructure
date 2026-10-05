@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: website-postgres
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: website-postgres
+
+  template:
+    metadata:
+      labels:
+        app: website-postgres
+
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_DB
+              value: "posts"
+
+            - name: POSTGRES_USER
+              value: "postgres"
+
+            - name: POSTGRES_PASSWORD
+              value: "admin"
+
+          volumeMounts:
+            - name: postgres-init
+              mountPath: /docker-entrypoint-initdb.d/schema.sql
+              subPath: schema.sql
+
+      volumes:
+        - name: postgres-init
+          configMap:
+            name: website-postgres-init
